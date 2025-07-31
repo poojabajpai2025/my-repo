@@ -1,0 +1,89 @@
+import axios from 'axios'
+import { useState ,useEffect} from 'react'
+export default function Menu(){
+
+ const [mnm,setMn]=useState("")
+   const [prz,setPrz]=useState(0)
+   const [fid,setFid]=useState(0)
+   const [qid,setQid]=useState(0)
+
+
+     function getmn(e){
+      setMn(e.target.value)
+      
+     }
+     function getqid(e){
+      setQid(e.target.value)
+       
+     }
+     function getprice(e){
+      setPrz(e.target.value)
+       
+     }
+     function getfid(e){
+      setFid(e.target.value)
+        
+     }
+
+     function save(){
+        alert(mnm+qid+prz+fid)
+        const dt={
+          mname:mnm,
+          price:prz,
+          fid:fid,
+          qid:qid
+        }
+        axios.post("http://localhost:3000/addmenu",dt)
+        .then(response=>{
+           if(response.data.status==200){
+            alert("Save success")
+           }
+        })
+     }
+
+     function updt(){
+      alert(mnm+qid+prz+fid)
+      const dt={
+        mname:mnm,
+        price:prz,
+        fid:fid,
+        qid:qid,
+        id:13
+      }
+      axios.put("http://localhost:3000/updatemenu",dt)
+      .then(response=>{
+         if(response.data.status==200){
+          alert("Update success")
+         }
+      })     
+   }
+
+   function del(){
+    const dt={
+      id:77
+    }
+    axios.delete("http://localhost:3000/delmenuById",{
+      data: dt
+    })
+    .then(response=>{
+       if(response.data.status==200){
+        alert("Delete success")
+       }
+    })     
+ }
+
+    return(
+        <>
+        <h1>Add Menu</h1>
+        <center>
+       <input type='text' onChange={getmn}></input> <br></br>
+       <input type='number' onChange={getprice}></input><br></br> 
+       <input type='number' onChange={getfid}></input> <br></br>
+       <input type='number' onChange={getqid}></input> <br></br>
+      <input type='button' onClick={save} value={"Save"}></input><br></br>
+      <input type='button' onClick={updt} value={"Update"}></input><br></br>
+      <input type='button' onClick={del} value={"DELETE"}></input><br></br>
+      </center>
+        </>
+    )
+}
